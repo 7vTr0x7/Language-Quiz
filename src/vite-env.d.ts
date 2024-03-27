@@ -14,3 +14,5 @@ type StateType = {
   words: IWord[];
   error?: string;
 };
+
+type WordType = { Text: string }[];
