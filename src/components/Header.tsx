@@ -9,7 +9,7 @@ const style = {
 
 const Header = () => {
   return (
-    <AppBar>
+    <AppBar position="static">
       <Toolbar>
         <Typography variant="h5" mr={"auto"} textTransform={"uppercase"}>
           LearnLang
