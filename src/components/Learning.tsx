@@ -3,8 +3,14 @@ import { Button, Container, Stack, Typography } from "@mui/material";
 import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { fetchWords } from "../utils/features";
-import { useDispatch } from "react-redux";
-import { getWordsReq, getWordsSuccess } from "../utils/redux/slices";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearState,
+  getWordsFail,
+  getWordsReq,
+  getWordsSuccess,
+} from "../utils/redux/slices";
+import Loader from "./Loader";
 
 const Learning = () => {
   const [count, setCount] = useState<number>(0);
@@ -14,19 +20,34 @@ const Learning = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  const { loading, error, words } = useSelector(
+    (store: { root: StateType }) => store.root
+  );
+
   const nextHandler = () => {
     setCount((prev) => (prev += 1));
   };
 
   const fetchData = async () => {
-    dispatch(getWordsReq());
-    const arr = await fetchWords("hi");
-    dispatch(getWordsSuccess(arr));
+    try {
+      dispatch(getWordsReq());
+      const arr = await fetchWords(params || "hi");
+      dispatch(getWordsSuccess(arr));
+
+      console.log(arr);
+      if (error) {
+        dispatch(clearState());
+      }
+    } catch (error) {
+      dispatch(getWordsFail("error"));
+    }
   };
 
   useEffect(() => {
     fetchData();
   }, []);
+
+  if (loading) return <Loader />;
 
   return (
     <Container maxWidth={"sm"} sx={{ padding: "1rem" }}>
@@ -46,10 +67,10 @@ const Learning = () => {
 
       <Stack direction={"row"} spacing={"1rem"} p={"0 2rem"}>
         <Typography variant="h4">
-          {count + 1} - {"Sample"}
+          {count + 1} - {words[count]?.word}
         </Typography>
         <Typography color={"gray"} variant="h4">
-          : {"LOL"}
+          : {words[count]?.meaning}
         </Typography>
         <Button sx={{ color: "black", borderRadius: "50%" }}>
           <VolumeUp />
