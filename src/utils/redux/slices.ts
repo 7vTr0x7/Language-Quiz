@@ -13,7 +13,7 @@ const rootSlice = createSlice({
     getWordsReq: (state) => {
       state.loading = true;
     },
-    getWordsSuccess: (state, action: PayloadAction<IWord[]>) => {
+    getWordsSuccess: (state, action: PayloadAction<WordsDataType[]>) => {
       state.loading = false;
       state.words = action.payload;
     },
