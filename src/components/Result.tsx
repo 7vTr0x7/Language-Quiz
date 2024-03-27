@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearState } from "../utils/redux/slices";
+import { countMatchingElement } from "../utils/features";
 
 const Result = () => {
   const { words, result } = useSelector(
@@ -18,7 +19,10 @@ const Result = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const correctAns = 5;
+  const correctAns = countMatchingElement(
+    result,
+    words.map((item) => item.meaning)
+  );
   const percentage = (correctAns / words.length) * 100;
 
   const resetHandler = (): void => {

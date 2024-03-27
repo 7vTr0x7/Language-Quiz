@@ -7,7 +7,7 @@ const generateOptions = (meaning: WordType, index: number): string[] => {
 
   const withOutCorrectAns = meaning.filter((item) => item.Text !== correctAns);
 
-  const incorrectOptions = _.sampleSize(withOutCorrectAns, 4).map(
+  const incorrectOptions = _.sampleSize(withOutCorrectAns, 3).map(
     (item) => item.Text
   );
 
@@ -58,4 +58,19 @@ export const fetchWords = async (
     console.log(error);
     return []; // Return an empty array in case of error
   }
+};
+
+export const countMatchingElement = (
+  arr1: string[],
+  arr2: string[]
+): number => {
+  if (arr1.length !== arr2.length) throw new Error("invalid Array");
+
+  let matchedCount = 0;
+
+  for (let i = 0; i < arr1.length; i++) {
+    if (arr1[i] === arr2[i]) matchedCount += 1;
+  }
+
+  return matchedCount;
 };
